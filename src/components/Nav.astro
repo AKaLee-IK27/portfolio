@@ -1,0 +1,42 @@
+---
+import { site } from "../data/site";
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-mint-deep/70 bg-paper/85 backdrop-blur-md"
+>
+  <nav
+    class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3.5"
+    aria-label="Primary"
+  >
+    <a
+      href="#top"
+      class="font-display text-lg font-semibold tracking-tight text-ink"
+    >
+      Anh Khoi Le<span class="text-leaf">.</span>
+    </a>
+
+    <ul class="hidden items-center gap-7 text-sm font-medium text-moss md:flex">
+      {
+        site.nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              data-nav={item.href}
+              class="relative inline-block py-1 transition-colors hover:text-ink aria-[current=true]:text-pine"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a
+      href={site.resume}
+      class="rounded-full border border-pine/20 bg-mint px-4 py-1.5 text-sm font-semibold text-pine transition-colors hover:bg-pine hover:text-white"
+    >
+      Résumé
+    </a>
+  </nav>
+</header>

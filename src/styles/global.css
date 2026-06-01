@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* ---- Brand tokens (calm green editorial) ---------------------------------- */
+@theme {
+  --color-paper: #f7faf4; /* warm off-white page */
+  --color-mint: #eaf3e4; /* light mint surface */
+  --color-mint-deep: #dcebd4; /* slightly deeper mint border */
+  --color-ink: #16241b; /* green-tinted near-black text */
+  --color-moss: #5d6b58; /* muted secondary text */
+  --color-leaf: #4e9f3d; /* primary green accent */
+  --color-pine: #2c5f2d; /* deep green */
+
+  --font-display: "Fraunces Variable", ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --shadow-card: 0 1px 2px rgba(22, 36, 27, 0.04), 0 8px 24px -12px rgba(22, 36, 27, 0.18);
+}
+
+/* ---- Base ----------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* clears the sticky nav on anchor jumps */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+::selection {
+  background-color: var(--color-leaf);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-pine);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* On the dark contact band, the ring needs a light color to clear 3:1. */
+#contact :focus-visible {
+  outline-color: var(--color-paper);
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+/* ---- Scroll reveal (progressive enhancement) ------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* No JS, or reduced motion: never hide content. */
+.no-js .reveal {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}

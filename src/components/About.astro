@@ -1,0 +1,81 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import { bio, education, achievements, certifications, languages } from "../data/about";
+---
+
+<section id="about" class="mx-auto max-w-5xl scroll-mt-20 px-6 py-16 md:py-24">
+  <SectionHeading index="01" title="About" />
+
+  <div class="grid gap-12 md:grid-cols-[1.5fr_1fr]">
+    <div class="reveal space-y-5 text-lg leading-relaxed text-ink/85">
+      {bio.map((p) => <p>{p}</p>)}
+    </div>
+
+    <aside class="reveal space-y-8">
+      <div>
+        <h3 class="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-moss">
+          Education
+        </h3>
+        <ul class="space-y-3">
+          {
+            education.map((e) => (
+              <li>
+                <p class="font-medium text-ink">{e.school}</p>
+                <p class="text-sm text-moss">
+                  {e.detail} &middot; {e.period}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-moss">
+          Recognition
+        </h3>
+        <ul class="space-y-2 text-sm">
+          {
+            achievements.map((a) => (
+              <li class="flex gap-2 text-ink/90">
+                <span aria-hidden="true" class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-leaf" />
+                <span>
+                  {a.title}
+                  {a.detail ? <span class="text-moss"> &middot; {a.detail}</span> : null}
+                  <span class="text-moss"> ({a.year})</span>
+                </span>
+              </li>
+            ))
+          }
+          {
+            certifications.map((c) => (
+              <li class="flex gap-2 text-ink/90">
+                <span aria-hidden="true" class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-leaf" />
+                <span>
+                  {c.title}
+                  <span class="text-moss"> ({c.year})</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-moss">
+          Languages
+        </h3>
+        <ul class="space-y-1 text-sm text-ink/90">
+          {
+            languages.map((l) => (
+              <li>
+                <span class="font-medium">{l.name}</span>
+                <span class="text-moss"> — {l.level}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
