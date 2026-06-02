@@ -20,3 +20,4 @@ node_modules/
 
 # local scratch screenshots (verification artifacts)
 .*.png
+.vercel
