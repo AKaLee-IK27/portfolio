@@ -3,8 +3,53 @@
 ## Current State
 
 **Last Updated:** 2026-06-04
-**Active Feature:** Résumé + homepage refresh (open-to-work, agentic hero, SEO/share,
-motion polish) implemented in the working tree; awaiting `/check`, then push + deploy.
+**Active Feature:** Skills lead-chip polish + two perf fixes (font preload, hero-terminal
+CLS) implemented & browser-verified (working tree). Fallback font-metric overrides:
+decided to skip (low ROI after swap+preload). Plus the prior résumé/homepage refresh
+awaiting `/check`.
+
+## 2026-06-04 — ui-ux-pro-max skill trial + Skills polish + perf audit
+
+**ui-ux-pro-max skill (trial, via `/think`):** installed the third-party skill
+(marketplace + `/plugin install`) and ran its design-system generator read-only
+(no `--persist`, output to `/tmp`). Verdict: **off-target** — it matched "green" → a
+wellness/Organic-Biophilic template with a monochrome+blue palette and Playfair, aimed
+at React-Native mobile apps (the skill self-declares RN-only). Nothing imported; the
+calm-green editorial identity already beats its suggestions and passes its hygiene
+checklist. Rollback if desired: `/plugin uninstall ui-ux-pro-max@ui-ux-pro-max-skill`
++ `/plugin marketplace remove ui-ux-pro-max-skill`.
+
+**Web perf verification (report-only, no edits):**
+- `font-display: swap` — **pass** (both @fontsource faces).
+- font **preload** — **gap**: built `<head>` has zero `rel=preload`; hero H1 (Fraunces
+  latin, 36.6 KB) is discovered only after the bundled CSS parses. Fix must be
+  Astro-aware (woff2 filenames are content-hashed).
+- **CLS ≈ 0.03** (good, < 0.10) on the production build; all non-zero shifts trace to
+  `DIV.term-wrap` (the hero terminal typing animation), **not** fonts. Caveats: localhost
+  understates font-swap CLS, and there are no fallback metric overrides
+  (`size-adjust`/`ascent-override`); reserving the terminal's dimensions would zero its CLS.
+
+**Perf fixes (implemented, browser-verified):**
+- **Font preload** — `Base.astro` preloads the two above-the-fold latin faces
+  (Fraunces wght + Be Vietnam Pro 400) via `?url` imports (hashed asset) + `as=font
+  type=font/woff2 crossorigin`. Verified single fetch (no double-fetch), exact URL match
+  with the bundled `@font-face`. The "preloaded but not used" console line is a known
+  warm-cache false positive (304 revalidation; cold first-visit consumes it).
+- **Hero-terminal CLS** — the request named "height" but measurement (layout-shift
+  `previousRect`/`currentRect`) showed the shift is **horizontal**: the right-anchored
+  card sizes to content, so the JS clear→retype shrank then regrew its width. Fix: the
+  Hero script pins `term.style.width` to the full-text width before clearing and restores
+  it after typing. CLS **0.034 → 0.0029** (~91%); width restored post-animation.
+- **Fallback font-metric overrides** — skipped by decision: low ROI after swap+preload;
+  benefit is slow-network swap-shift insurance only (unmeasurable on localhost). Revisit
+  if CWV field data later shows CLS.
+
+**Skills polish (implemented):** each group's lead skill (Flutter / Claude Code /
+TypeScript / Firebase) renders as a filled leaf/pine accent chip — same voice as the hero
+"Open to work" pill — via a new `lead` variant on `Tag.astro` (chip geometry stays
+single-source in `Tag`); the rest use the default outline `Tag`. Pure presentation;
+`skills.ts` unchanged. `npm run build` → exit 0; rendered & verified at 1440px and 375px
+(4 lead chips, chips wrap cleanly, on-brand).
 
 ## 2026-06-04 — Résumé rewrite, agentic hero, open-to-work, SEO/share
 

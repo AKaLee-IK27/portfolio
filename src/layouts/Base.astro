@@ -7,6 +7,13 @@ import "@fontsource/be-vietnam-pro/700.css";
 import "../styles/global.css";
 import { site } from "../data/site";
 
+// Above-the-fold faces preloaded so the real font swaps in sooner (the hero H1
+// uses Fraunces; body copy uses Be Vietnam Pro 400). `?url` yields the hashed
+// build asset so the preload never goes stale; `crossorigin` is required — font
+// fetches are anonymous-CORS, and omitting it makes the browser fetch twice.
+import frauncesLatin from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url";
+import bvpLatin from "@fontsource/be-vietnam-pro/files/be-vietnam-pro-latin-400-normal.woff2?url";
+
 interface Props {
   title?: string;
   description?: string;
@@ -48,6 +55,8 @@ const personLd = JSON.stringify({
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bvpLatin} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

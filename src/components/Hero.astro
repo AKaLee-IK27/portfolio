@@ -193,6 +193,12 @@ const session = [
     const cursor = term.querySelector<HTMLElement>(".term-cursor");
     const texts = lines.map((l) => l.querySelector(".term-text")?.textContent ?? "");
 
+    // The card is right-anchored (md:justify-self-end) and sizes to its content.
+    // Clearing the text shrinks it and typing regrows it, nudging its left edge
+    // (a small horizontal CLS). Pin the full-text width up front so the type-in
+    // can't reflow the card; restored once typing completes (width is unchanged).
+    term.style.width = `${term.offsetWidth}px`;
+
     // Clear and hide every line until it is typed.
     lines.forEach((l) => {
       const t = l.querySelector(".term-text");
@@ -224,6 +230,7 @@ const session = [
 
     const run = async () => {
       for (let i = 0; i < lines.length; i++) await typeLine(i);
+      term.style.width = ""; // restore responsive width (content is now full → no shift)
     };
 
     if ("IntersectionObserver" in window) {

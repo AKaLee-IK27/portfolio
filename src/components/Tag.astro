@@ -1,8 +1,20 @@
 ---
-// One chip voice across Experience, Projects, and Skills.
-// (The filled "Present" badge in Experience is deliberately different.)
+// One chip voice across Experience, Projects, and Skills. Two deliberate filled
+// exceptions share this geometry: the "Present" badge in Experience, and the
+// per-group lead chip in Skills (pass `lead`) — both swap the moss outline for a
+// filled leaf/pine accent (same voice as the hero "Open to work" pill).
+interface Props {
+  lead?: boolean;
+}
+const { lead = false } = Astro.props;
 ---
 
-<li class="rounded-full border border-mint-deep px-2.5 py-1 text-xs font-medium text-moss">
+<li
+  class={`rounded-full border px-2.5 py-1 text-xs ${
+    lead
+      ? "border-leaf/40 bg-leaf/10 font-semibold text-pine"
+      : "border-mint-deep font-medium text-moss"
+  }`}
+>
   <slot />
 </li>

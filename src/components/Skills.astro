@@ -16,7 +16,10 @@ import { skills } from "../data/skills";
             {group.label}
           </h3>
           <ul class="flex flex-wrap gap-2">
-            {group.items.map((i) => <Tag>{i}</Tag>)}
+            {/* First item is the group's lead skill -> filled accent chip. */}
+            {group.items.map((item, i) => (
+              <Tag lead={i === 0}>{item}</Tag>
+            ))}
           </ul>
         </div>
       ))
