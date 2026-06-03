@@ -7,22 +7,23 @@ import { getCollection } from "astro:content";
 
 const postsEn = await getCollection("blog");
 const postsVi = await getCollection("blog-vi");
-const enBySlug = new Map(postsEn.map((post) => [post.id, post]));
-const viBySlug = new Map(postsVi.map((post) => [post.id, post]));
-const allSlugs = Array.from(new Set([...enBySlug.keys(), ...viBySlug.keys()]));
+const getTranslationKey = (post: (typeof postsEn)[number] | (typeof postsVi)[number]) =>
+  post.data.translationKey ?? post.id;
+const enByKey = new Map(postsEn.map((post) => [getTranslationKey(post), post]));
+const viByKey = new Map(postsVi.map((post) => [getTranslationKey(post), post]));
+const allKeys = Array.from(new Set([...enByKey.keys(), ...viByKey.keys()]));
 
-const posts = allSlugs
-  .map((slug) => {
-    const en = enBySlug.get(slug);
-    const vi = viBySlug.get(slug);
+const posts = allKeys
+  .map((key) => {
+    const en = enByKey.get(key);
+    const vi = viByKey.get(key);
     const primary = en ?? vi;
     if (!primary) return null;
     return {
-      slug,
       primary,
       primaryLang: en ? "en" : "vi",
-      hasEn: Boolean(en),
-      hasVi: Boolean(vi),
+      enSlug: en?.id,
+      viSlug: vi?.id,
     };
   })
   .filter((post): post is NonNullable<typeof post> => post !== null)
@@ -60,8 +61,8 @@ const description = "Thoughts on engineering, tooling, and building software.";
         <div class="grid gap-5 sm:grid-cols-2">
           {posts.map((entry, i) => {
             const post = entry.primary;
-            const href = `/blog/${entry.primaryLang}/${entry.slug}/`;
-            const hasTranslation = entry.hasEn && entry.hasVi;
+            const href = `/blog/${entry.primaryLang}/${post.id}/`;
+            const hasTranslation = Boolean(entry.enSlug && entry.viSlug);
 
             return (
               <article
@@ -110,17 +111,17 @@ const description = "Thoughts on engineering, tooling, and building software.";
 
                   {hasTranslation && (
                     <div class="inline-flex items-center gap-1 text-xs font-medium">
-                      {entry.hasEn && (
+                      {entry.enSlug && (
                         <a
-                          href={`/blog/en/${entry.slug}/`}
+                          href={`/blog/en/${entry.enSlug}/`}
                           class="rounded-full border border-mint-deep px-2 py-0.5 text-pine transition-colors hover:border-leaf"
                         >
                           EN
                         </a>
                       )}
-                      {entry.hasVi && (
+                      {entry.viSlug && (
                         <a
-                          href={`/blog/vi/${entry.slug}/`}
+                          href={`/blog/vi/${entry.viSlug}/`}
                           class="rounded-full border border-mint-deep px-2 py-0.5 text-pine transition-colors hover:border-leaf"
                         >
                           VI

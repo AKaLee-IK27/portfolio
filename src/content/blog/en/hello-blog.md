@@ -2,6 +2,7 @@
 title: "Hello, Blog"
 description: "A quick introduction to the blog — what to expect and why I'm writing here."
 pubDate: "Jun 03 2025"
+translationKey: "hello-blog"
 tags: ["intro"]
 ---
 

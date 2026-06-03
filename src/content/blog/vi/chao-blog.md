@@ -2,6 +2,7 @@
 title: "Chào Blog"
 description: "Lời giới thiệu ngắn về blog — những gì bạn có thể mong đợi và lý do mình viết ở đây."
 pubDate: "Jun 03 2025"
+translationKey: "hello-blog"
 tags: ["giới thiệu"]
 ---
 

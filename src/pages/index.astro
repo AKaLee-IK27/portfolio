@@ -50,7 +50,8 @@ import Footer from "../components/Footer.astro";
     const byId = new Map<string, HTMLAnchorElement>();
     navLinks.forEach((a) => {
       const href = a.getAttribute("data-nav");
-      if (href) byId.set(href.slice(1), a);
+      const hash = href ? new URL(href, window.location.href).hash : "";
+      if (hash) byId.set(hash.slice(1), a);
     });
     const sections = [...byId.keys()]
       .map((id) => document.getElementById(id))

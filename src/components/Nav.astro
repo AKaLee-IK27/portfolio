@@ -10,7 +10,7 @@ import { site } from "../data/site";
     aria-label="Primary"
   >
     <a
-      href="#top"
+      href="/"
       class="font-display text-lg font-semibold tracking-tight text-ink"
     >
       Anh Khoi Le<span class="text-leaf">.</span>
@@ -22,7 +22,7 @@ import { site } from "../data/site";
           <li>
             <a
               href={item.href}
-              data-nav={item.href}
+              data-nav={item.href.includes("#") ? item.href : undefined}
               class="relative inline-block py-1 transition-colors hover:text-ink aria-[current=true]:text-pine"
             >
               {item.label}
