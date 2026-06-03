@@ -1,0 +1,21 @@
+{
+  "_note": "PLACEHOLDER. As of 2026-06-02 this repo had no tracked in-flight work: 3 commits (the site was landed whole), a clean working tree in sync with origin/main, zero TODO/FIXME markers, and no feature branches. The entries below are NOT a real backlog and were NOT derived from project evidence — they are scaffolding. Replace them with real, tracked work (an actual request, a branch, or an in-flight diff) before treating this file as a feature tracker. Do not invent a roadmap. Schema mirrors owlet/feature_list.json: id, name, description, dependencies, status, evidence.",
+  "features": [
+    {
+      "id": "feat-000",
+      "name": "PLACEHOLDER — replace with the first real task",
+      "description": "No in-flight feature existed when this harness was created. When real work begins, replace this entry: state the goal, the data module or component it touches (e.g. src/data/projects.ts), and the verification command (npm run build, plus a browser/print check for visual changes).",
+      "dependencies": [],
+      "status": "placeholder",
+      "evidence": "Baseline only: npm run build passed on 2026-06-02 (exit 0, 2 pages: /index.html + /resume/index.html, ~0.4s). No feature implemented."
+    },
+    {
+      "id": "feat-001",
+      "name": "PLACEHOLDER — second slot",
+      "description": "Spare placeholder. Delete or replace with a real, tracked item. Keep the redaction boundary in mind for any content change (public OSS only in projects.ts; generic clients in experience.ts; no phone in site.ts).",
+      "dependencies": [],
+      "status": "placeholder",
+      "evidence": ""
+    }
+  ]
+}
