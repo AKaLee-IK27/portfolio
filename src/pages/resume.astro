@@ -7,7 +7,7 @@ import { education, achievements, certifications, languages } from "../data/abou
 import { projects } from "../data/projects";
 
 const summary =
-  "Software engineer building mobile and web products in Flutter, currently at Vietnam Silicon. I run AI coding agents in production to lift delivery velocity while keeping code quality through rigorous review. B.Eng in Software Engineering, UIT (VNU-HCM).";
+  "Software engineer at Vietnam Silicon building mobile and web products in Flutter. I run AI coding agents in production to ship faster without giving up code quality, holding the line with rigorous review. B.Eng in Software Engineering, UIT (VNU-HCM).";
 ---
 
 <Base title={`${site.name} — Résumé`}>
@@ -18,9 +18,11 @@ const summary =
       <p class="r-contact">
         <a href={`mailto:${site.email}`}>{site.email}</a>
         <span>·</span>
-        <a href={site.links.github}>github.com/AKaLee-IK27</a>
+        <a href={Astro.site?.href}>Portfolio</a>
         <span>·</span>
-        <a href={site.links.linkedin}>linkedin.com/in/akl0101</a>
+        <a href={site.links.github}>GitHub</a>
+        <span>·</span>
+        <a href={site.links.linkedin}>LinkedIn</a>
         <span>·</span>
         <span>{site.location}</span>
       </p>
@@ -54,29 +56,32 @@ const summary =
       }
     </section>
 
+    <section>
+      <h2>Skills</h2>
+      <ul class="r-skills">
+        {
+          skills.map((g) => (
+            <li>
+              <strong>{g.label}:</strong> {g.items.join(", ")}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
     <div class="r-grid">
       <section>
         <h2>Projects</h2>
         <ul class="r-projects">
           {projects.slice(0, 3).map((p) => (
             <li>
-              <strong>{p.name}</strong> — {p.blurb}
-              <span class="r-proj-tags">({p.tags.join(", ")})</span>
+              <div class="r-proj-head">
+                <strong>{p.name}</strong>
+                <span class="r-proj-tags">{p.tags.join(" · ")}</span>
+              </div>
+              {p.blurb}
             </li>
           ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2>Skills</h2>
-        <ul class="r-skills">
-          {
-            skills.map((g) => (
-              <li>
-                <strong>{g.label}:</strong> {g.items.join(", ")}
-              </li>
-            ))
-          }
         </ul>
       </section>
 
@@ -105,7 +110,7 @@ const summary =
   <style is:global>
     @page {
       size: A4;
-      margin: 16mm 16mm;
+      margin: 14mm 15mm;
     }
     body {
       background: #ffffff;
@@ -125,7 +130,7 @@ const summary =
     .r-head {
       border-bottom: 2px solid #4e9f3d;
       padding-bottom: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .r-head h1 {
       font-size: 26pt;
@@ -146,19 +151,26 @@ const summary =
       flex-wrap: wrap;
       gap: 8px;
     }
+    /* Section headers: uppercase label + hairline divider for clear structure */
     .resume h2 {
-      font-size: 12pt;
-      letter-spacing: 0.04em;
+      font-size: 10pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: #2c5f2d;
       font-weight: 700;
-      margin: 14px 0 8px;
+      margin: 16px 0 9px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #cfe0c3;
       font-family: var(--font-display);
     }
     .r-summary {
       margin: 0;
     }
+    /* Experience: a soft left rule groups each role block */
     .r-role-block {
-      margin-bottom: 8px;
+      margin-bottom: 11px;
+      padding-left: 12px;
+      border-left: 2px solid #dcebd2;
       break-inside: avoid;
     }
     .r-role-line {
@@ -189,18 +201,49 @@ const summary =
     .resume li {
       margin-bottom: 2px;
     }
-    .r-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 14px;
+    .r-tags {
+      color: #5d6b58;
+      font-size: 9pt;
+      margin: 3px 0 0;
+      padding-left: 16px;
+    }
+    /* Skills: full-width compact band under Experience */
+    .r-skills {
+      padding-left: 0;
     }
     .r-skills li {
       margin-bottom: 4px;
       list-style: none;
     }
-    .r-skills {
+    /* Lower area: two balanced columns (Projects / background) */
+    .r-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 26px;
+      margin-top: 2px;
+      align-items: start;
+    }
+    .r-projects {
       padding-left: 0;
+      list-style: none;
+      font-size: 9.8pt;
+    }
+    .r-projects li {
+      margin-bottom: 7px;
+    }
+    .r-proj-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1px;
+    }
+    .r-proj-head strong {
+      font-size: 10.2pt;
+    }
+    .r-proj-tags {
+      color: #5d6b58;
+      font-size: 8.6pt;
     }
     .r-edu {
       margin: 0 0 8px;
@@ -218,23 +261,6 @@ const summary =
     .r-langs {
       margin: 0;
       font-size: 9.8pt;
-    }
-    .r-tags {
-      color: #5d6b58;
-      font-size: 9pt;
-      margin: 2px 0 0;
-      padding-left: 16px;
-    }
-    .r-projects {
-      padding-left: 16px;
-      font-size: 9.8pt;
-    }
-    .r-projects li {
-      margin-bottom: 4px;
-    }
-    .r-proj-tags {
-      color: #5d6b58;
-      font-size: 9pt;
     }
     /* keep the document calm in print; the brand color stays in accents only */
     @media print {

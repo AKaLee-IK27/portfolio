@@ -7,12 +7,12 @@ export const education = [
   {
     school: "University of Information Technology, VNU-HCM",
     detail: "B.Eng, Software Engineering",
-    period: "2022 — 2026",
+    period: "2022 - 2026",
   },
   {
     school: "Tran Hung Dao High School for the Gifted",
     detail: "Honors Class",
-    period: "2019 — 2022",
+    period: "2019 - 2022",
   },
 ];
 
