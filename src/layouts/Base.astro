@@ -20,6 +20,27 @@ const {
 const canonical = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).href
   : Astro.url.pathname;
+
+const ogImage = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
+
+const personLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: Astro.site?.href,
+  jobTitle: site.role,
+  email: `mailto:${site.email}`,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Ho Chi Minh City",
+    addressCountry: "VN",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "University of Information Technology, VNU-HCM",
+  },
+  sameAs: [site.links.github, site.links.linkedin],
+});
 ---
 
 <!doctype html>
@@ -37,12 +58,42 @@ const canonical = Astro.site
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name}, ${site.role}`} />
+    <meta name="twitter:image" content={ogImage} />
     <!-- Reveal JS is opt-in: drop the no-js guard the moment JS runs. -->
     <script is:inline>
       document.documentElement.classList.remove("no-js");
     </script>
+    {
+      Astro.url.pathname === "/" && (
+        <script type="application/ld+json" is:inline set:html={personLd} />
+      )
+    }
   </head>
   <body>
+    {
+      /* Progress bar on scrolling pages only; the résumé is a standalone document. */
+      !Astro.url.pathname.startsWith("/resume") && (
+        <div id="scroll-progress" aria-hidden="true" />
+      )
+    }
     <slot />
+    <script>
+      // Slim scroll-progress bar; harmless without JS (stays at 0 / hidden).
+      const bar = document.getElementById("scroll-progress");
+      if (bar) {
+        const update = () => {
+          const h = document.documentElement;
+          const max = h.scrollHeight - h.clientHeight;
+          bar.style.transform = `scaleX(${max > 0 ? h.scrollTop / max : 0})`;
+        };
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+        window.addEventListener("resize", update, { passive: true });
+      }
+    </script>
   </body>
 </html>

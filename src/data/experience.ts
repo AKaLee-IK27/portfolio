@@ -15,8 +15,7 @@ export const experience: Role[] = [
     company: "Vietnam Silicon",
     title: "Software Engineer",
     location: "Ho Chi Minh City",
-    period: "Dec 2025 - Present",
-    current: true,
+    period: "Dec 2025 - May 2026",
     highlights: [
       "Cut review-cycle time by bringing Claude Code into the team workflow for automated refactoring, feature work, and unit testing, with manual review holding the quality bar.",
       "Replaced a national agriculture ministry's manual paperwork with a searchable digital audit trail, building the Flutter Web platform that digitizes durian export and supply-chain tracking.",

@@ -2,8 +2,37 @@
 
 ## Current State
 
-**Last Updated:** 2026-06-02
-**Active Feature:** None. The site is landed and building clean; no tracked in-flight work.
+**Last Updated:** 2026-06-04
+**Active Feature:** Résumé + homepage refresh (open-to-work, agentic hero, SEO/share,
+motion polish) implemented in the working tree; awaiting `/check`, then push + deploy.
+
+## 2026-06-04 — Résumé rewrite, agentic hero, open-to-work, SEO/share
+
+**Shipped to production** (commit `30030f1`, `vercel --prod`):
+- Rewrote résumé content to lead with outcomes; stronger résumé layout (section
+  dividers, left-accent experience blocks, two-column lower grid).
+- Contact links show platform names (Portfolio / GitHub / LinkedIn) instead of URLs,
+  embedded as clickable PDF annotations.
+- Regenerated `public/resume/Anh-Khoi-Le-Resume.pdf`.
+
+**In the working tree, verified, awaiting `/check` + deploy:**
+- **Agentic terminal hero** (`Hero.astro`): self-typing Claude Code session, decorative
+  (`aria-hidden`); the full session is server-rendered so no-JS / reduced-motion show it
+  static.
+- **Open-to-work correction** (no longer at Vietnam Silicon): `experience.ts` VS role is
+  `Dec 2025 - May 2026` with `current` removed (no "Present" badge); `about.ts` bio and
+  `resume.astro` summary reframed to "most recently at Vietnam Silicon"; hero shows an
+  "Open to work" pill. Résumé PDF regenerated to match.
+- **Social share image**: `tools/og-card.html` rendered once to `public/og.png`
+  (1200×630) via headless Chrome; `og:image` / `twitter:image` added in `Base.astro`.
+- **SEO**: `Person` JSON-LD in `Base.astro` (homepage only).
+- **Motion polish**: scroll-progress bar (scrolling pages only, not `/resume`) +
+  section-heading underline-draw; both degrade to static under no-JS / reduced-motion.
+
+**Verification (real):** `npm run build` → exit 0, 7 pages. Rendered hero (desktop +
+375px), Experience, the OG card, and résumé PDF page 1 in a browser; greps confirm
+"Currently at Vietnam Silicon" is gone and the PDF no longer says "Present". Live OG
+unfurl still to validate post-deploy (social crawlers cache aggressively).
 
 ## 2026-06-02 — Agent harness bootstrapped
 
@@ -50,5 +79,9 @@ Created the agent harness for this repo (owlet-style): `AGENTS.md` (knowledge ba
    `public/resume/Anh-Khoi-Le-Resume.pdf` (manual — no script).
 
 ## Blockers / Risks
-- None blocking. Note: regenerating the résumé PDF is a manual print-export; the
-  mechanism is not in the repo.
+- None blocking. **Résumé PDF regeneration (mechanism now known):** serve the built site
+  (`npm run preview`) and print `/resume` with headless Chrome:
+  `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new
+  --no-pdf-header-footer --print-to-pdf=public/resume/Anh-Khoi-Le-Resume.pdf
+  http://localhost:<port>/resume`. The OG image uses the same Chrome via `--screenshot`
+  against `tools/og-card.html` (see that file's header for the exact command).

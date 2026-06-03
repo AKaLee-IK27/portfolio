@@ -1,5 +1,5 @@
 export const bio = [
-  "I'm a software engineer in Ho Chi Minh City building mobile and web products in Flutter, currently at Vietnam Silicon. I like software that feels calm to use: careful typography, defaults that respect the person on the other side, and no chrome that isn't earning its place.",
+  "I'm a software engineer in Ho Chi Minh City building mobile and web products in Flutter, most recently at Vietnam Silicon. I like software that feels calm to use: careful typography, defaults that respect the person on the other side, and no chrome that isn't earning its place.",
   "Lately I care as much about how software gets built as what gets built, running AI coding agents like Claude Code in production behind a governed setup, and building small local-LLM tools for macOS on the side.",
 ];
 

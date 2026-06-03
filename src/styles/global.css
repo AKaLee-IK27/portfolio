@@ -72,14 +72,47 @@ a {
   transform: none;
 }
 
+/* Section-heading rule draws in from the left as the heading reveals. */
+.section-rule {
+  transform: translateY(-0.4rem) scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+}
+.reveal.is-visible .section-rule {
+  transform: translateY(-0.4rem) scaleX(1);
+}
+
+/* Slim scroll-progress bar (JS sets scaleX 0..1). */
+#scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--color-leaf);
+  z-index: 70;
+  pointer-events: none;
+}
+@media print {
+  #scroll-progress { display: none; }
+}
+
 /* No JS, or reduced motion: never hide content. */
 .no-js .reveal {
   opacity: 1;
   transform: none;
 }
+.no-js .section-rule {
+  transform: translateY(-0.4rem);
+}
+.no-js #scroll-progress {
+  display: none;
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
+  .section-rule { transform: translateY(-0.4rem); }
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
 
