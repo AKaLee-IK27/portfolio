@@ -1,0 +1,30 @@
+---
+title: "Agentic AI Changed How I Work. I'm Not Sure How I Feel About It."
+description: "A real look at putting AI coding agents into daily workflow: faster, yes, but at what cost?"
+pubDate: "Jun 03 2025"
+tags: ["AI", "coding agent", "workflow"]
+---
+
+When I first started using AI coding agents, I thought the win was simple: I'd ship faster. And I do. But the more interesting thing isn't the speed. It's how the work itself has changed, and what that means for me as an engineer.
+
+I had used GitHub Copilot before. Inline suggestions were helpful, like a smarter autocomplete. It made typing easier but didn't change the way I thought about building things.
+
+Then I switched to Cursor. The difference was context. Cursor actually reads your codebase, not just the open file, but the project structure, the patterns you've already established, the imports you're using. When I tell it to build something, it knows where to put it and what to follow. That was the moment it went from a neat trick to a real workflow shift.
+
+Now my process looks like this: I figure out what needs to exist, point Cursor at the relevant files, and say "do it." Not a detailed spec. Not a step-by-step plan. Just a short instruction and a file path. Then I review what it produces.
+
+It works surprisingly often. I recently had it build a custom Flutter widget, something I would have spent an hour on, and it got most of it right on the first pass. The widget rendered correctly, the props were typed, the layout matched what I described. I tweaked a few things and moved on.
+
+But here's the part that keeps me up: Cursor is confident. Always. And sometimes that confidence is wrong.
+
+The worst ones are state management mistakes. The code looks right at a glance. It compiles. The widget renders. But the state doesn't update when it should, or it rebuilds too aggressively, or it misses an edge case that only shows up after ten interactions. These bugs are subtle, and I catch them only because I know the domain well enough to spot them. If I had been more hands-off, I wouldn't have caught them at all.
+
+That's the tension. I design and the agent writes, but I still need to understand the domain deeply enough to review what it produces. And I'm starting to worry: if I keep delegating the implementation, will I lose the deep understanding that makes me a good reviewer in the first place?
+
+There's a real skill drift risk here. If I don't write the code myself, I don't struggle through the decisions that build intuition. I don't learn the edge cases the hard way. I just read diffs that look correct and move on. Over time, that feels like it could hollow out the knowledge that makes me useful.
+
+I'm not sure I have the answer yet. I'm still in the middle of the learning curve. Some days I feel like I've unlocked a superpower, I can build things in hours that used to take days. Other days I feel like I'm outsourcing my own growth to a tool that's good at sounding right.
+
+The honest summary: agentic AI is transformative for how I work, but it's early, it's imperfect, and I'm still figuring out how to use it without losing the parts of myself that make me a good engineer.
+
+I'll keep writing about this as I learn.
