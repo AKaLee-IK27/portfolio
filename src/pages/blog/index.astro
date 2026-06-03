@@ -1,8 +1,11 @@
 ---
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
 import LanguageToggle from "../../components/LanguageToggle.astro";
+import Tag from "../../components/Tag.astro";
 import { getCollection } from "astro:content";
 
-// Show all posts, grouped by language. Default = EN.
 const postsEn = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
@@ -14,122 +17,167 @@ const formatDate = (d: Date) =>
   d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 const formatDateVi = (d: Date) =>
   d.toLocaleDateString("vi-VN", { year: "numeric", month: "long", day: "numeric" });
+
+const title = "Blog — Anh Khoi Le";
+const description = "Thoughts on engineering, tooling, and building software.";
 ---
 
-<LanguageToggle lang="en" />
+<Base {title} {description}>
+  <a
+    href="#main"
+    class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-pine focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+  >
+    Skip to content
+  </a>
+  <Nav />
 
-<div class="reveal mb-10 flex items-baseline gap-4">
-  <span class="font-display text-base font-semibold text-pine">Blog</span>
-  <h2 class="font-display text-3xl font-semibold text-ink md:text-4xl">English</h2>
-  <span aria-hidden="true" class="ml-2 h-px flex-1 translate-y-[-0.4rem] bg-mint-deep"></span>
-</div>
+  <main id="main">
+    <section id="blog" class="scroll-mt-20 py-16 md:py-24">
+      <div class="mx-auto max-w-5xl px-6">
 
-<p class="reveal -mt-4 mb-10 max-w-2xl text-moss">
-  Things I've written about engineering, tooling, and building software.
-</p>
-
-<div class="grid gap-5 sm:grid-cols-2 mb-16">
-  {postsEn.map((post, i) => (
-    <a
-      href={`/blog/en/${post.id}/`}
-      class={`reveal group flex flex-col rounded-2xl border border-mint-deep bg-paper p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-leaf ${i === 0 ? "sm:col-span-2" : ""}`}
-    >
-      {i === 0 && (
-        <span class="mb-2 inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-pine">
-          <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-leaf" />
-          Latest
-        </span>
-      )}
-      <div class="flex items-start justify-between gap-3">
-        <h3
-          class={`font-display font-semibold text-ink transition-colors group-hover:text-pine ${i === 0 ? "text-2xl" : "text-xl"}`}
-        >
-          {post.data.title}
-        </h3>
-        <svg
-          viewBox="0 0 24 24"
-          class="h-5 w-5 shrink-0 text-moss transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-pine"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M7 17 17 7M8 7h9v9" />
-        </svg>
-      </div>
-      <p class={`mt-3 flex-1 leading-relaxed text-ink/80 ${i === 0 ? "max-w-2xl" : ""}`}>
-        {post.data.description}
-      </p>
-      <div class="mt-4 flex flex-wrap items-center gap-3">
-        <time class="text-xs text-moss">{formatDate(post.data.pubDate)}</time>
-        {post.data.tags.length > 0 && (
-          <ul class="flex flex-wrap gap-2">
-            {post.data.tags.map((t) => (
-              <span class="inline-block rounded-full bg-mint px-2.5 py-0.5 text-xs font-medium text-pine">{t}</span>
-            ))}
-          </ul>
-        )}
-      </div>
-    </a>
-  ))}
-</div>
-
-<div class="reveal mb-10 flex items-baseline gap-4">
-  <span class="font-display text-base font-semibold text-pine">Tiếng Việt</span>
-  <h2 class="font-display text-3xl font-semibold text-ink md:text-4xl">Vietnamese</h2>
-  <span aria-hidden="true" class="ml-2 h-px flex-1 translate-y-[-0.4rem] bg-mint-deep"></span>
-</div>
-
-{postsVi.length === 0 ? (
-  <p class="reveal text-moss">Chưa có bài viết tiếng Việt nào.</p>
-) : (
-  <div class="grid gap-5 sm:grid-cols-2">
-    {postsVi.map((post, i) => (
-      <a
-        href={`/blog/vi/${post.id}/`}
-        class={`reveal group flex flex-col rounded-2xl border border-mint-deep bg-paper p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-leaf ${i === 0 ? "sm:col-span-2" : ""}`}
-      >
-        {i === 0 && (
-          <span class="mb-2 inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-pine">
-            <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-leaf" />
-            Mới nhất
-          </span>
-        )}
-        <div class="flex items-start justify-between gap-3">
-          <h3
-            class={`font-display font-semibold text-ink transition-colors group-hover:text-pine ${i === 0 ? "text-2xl" : "text-xl"}`}
-          >
-            {post.data.title}
-          </h3>
-          <svg
-            viewBox="0 0 24 24"
-            class="h-5 w-5 shrink-0 text-moss transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-pine"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M7 17 17 7M8 7h9v9" />
-          </svg>
+        <div class="reveal mb-10 flex items-baseline gap-4">
+          <span class="font-display text-base font-semibold text-pine">04</span>
+          <h2 class="font-display text-3xl font-semibold text-ink md:text-4xl">Blog</h2>
+          <span aria-hidden="true" class="ml-2 h-px flex-1 translate-y-[-0.4rem] bg-mint-deep"></span>
         </div>
-        <p class={`mt-3 flex-1 leading-relaxed text-ink/80 ${i === 0 ? "max-w-2xl" : ""}`}>
-          {post.data.description}
+
+        <p class="reveal -mt-4 mb-10 max-w-2xl text-moss">
+          Things I've written about engineering, tooling, and building software.
         </p>
-        <div class="mt-4 flex flex-wrap items-center gap-3">
-          <time class="text-xs text-moss">{formatDateVi(post.data.pubDate)}</time>
-          {post.data.tags.length > 0 && (
-            <ul class="flex flex-wrap gap-2">
-              {post.data.tags.map((t) => (
-                <span class="inline-block rounded-full bg-mint px-2.5 py-0.5 text-xs font-medium text-pine">{t}</span>
-              ))}
-            </ul>
-          )}
+
+        <div class="mb-6">
+          <LanguageToggle lang="en" />
         </div>
-      </a>
-    ))}
-  </div>
-)}
+
+        <div class="grid gap-5 sm:grid-cols-2 mb-16">
+          {postsEn.map((post, i) => (
+            <a
+              href={`/blog/en/${post.id}/`}
+              class={`reveal group flex flex-col rounded-2xl border border-mint-deep bg-paper p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-leaf ${i === 0 ? "sm:col-span-2" : ""}`}
+            >
+              {i === 0 && (
+                <span class="mb-2 inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-pine">
+                  <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-leaf" />
+                  Latest
+                </span>
+              )}
+              <div class="flex items-start justify-between gap-3">
+                <h3
+                  class={`font-display font-semibold text-ink transition-colors group-hover:text-pine ${i === 0 ? "text-2xl" : "text-xl"}`}
+                >
+                  {post.data.title}
+                </h3>
+                <svg
+                  viewBox="0 0 24 24"
+                  class="h-5 w-5 shrink-0 text-moss transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-pine"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17 17 7M8 7h9v9" />
+                </svg>
+              </div>
+              <p class={`mt-3 flex-1 leading-relaxed text-ink/80 ${i === 0 ? "max-w-2xl" : ""}`}>
+                {post.data.description}
+              </p>
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <time class="text-xs text-moss">{formatDate(post.data.pubDate)}</time>
+                {post.data.tags.length > 0 && (
+                  <ul class="flex flex-wrap gap-2">
+                    {post.data.tags.map((t) => (
+                      <Tag>{t}</Tag>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div class="reveal mb-10 flex items-baseline gap-4">
+          <span class="font-display text-base font-semibold text-pine">Tiếng Việt</span>
+          <h2 class="font-display text-3xl font-semibold text-ink md:text-4xl">Vietnamese</h2>
+          <span aria-hidden="true" class="ml-2 h-px flex-1 translate-y-[-0.4rem] bg-mint-deep"></span>
+        </div>
+
+        {postsVi.length === 0 ? (
+          <p class="reveal text-moss">Chưa có bài viết tiếng Việt nào.</p>
+        ) : (
+          <div class="grid gap-5 sm:grid-cols-2">
+            {postsVi.map((post, i) => (
+              <a
+                href={`/blog/vi/${post.id}/`}
+                class={`reveal group flex flex-col rounded-2xl border border-mint-deep bg-paper p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-leaf ${i === 0 ? "sm:col-span-2" : ""}`}
+              >
+                {i === 0 && (
+                  <span class="mb-2 inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-pine">
+                    <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-leaf" />
+                    Mới nhất
+                  </span>
+                )}
+                <div class="flex items-start justify-between gap-3">
+                  <h3
+                    class={`font-display font-semibold text-ink transition-colors group-hover:text-pine ${i === 0 ? "text-2xl" : "text-xl"}`}
+                  >
+                    {post.data.title}
+                  </h3>
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="h-5 w-5 shrink-0 text-moss transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-pine"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17 17 7M8 7h9v9" />
+                  </svg>
+                </div>
+                <p class={`mt-3 flex-1 leading-relaxed text-ink/80 ${i === 0 ? "max-w-2xl" : ""}`}>
+                  {post.data.description}
+                </p>
+                <div class="mt-4 flex flex-wrap items-center gap-3">
+                  <time class="text-xs text-moss">{formatDateVi(post.data.pubDate)}</time>
+                  {post.data.tags.length > 0 && (
+                    <ul class="flex flex-wrap gap-2">
+                      {post.data.tags.map((t) => (
+                        <Tag>{t}</Tag>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  const reveals = document.querySelectorAll<HTMLElement>(".reveal");
+  if ("IntersectionObserver" in window) {
+    const revealIO = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            revealIO.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.08 },
+    );
+    reveals.forEach((el) => revealIO.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add("is-visible"));
+  }
+</script>
