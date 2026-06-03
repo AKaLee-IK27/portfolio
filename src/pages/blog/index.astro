@@ -2,21 +2,34 @@
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
-import LanguageToggle from "../../components/LanguageToggle.astro";
 import Tag from "../../components/Tag.astro";
 import { getCollection } from "astro:content";
 
-const postsEn = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
-const postsVi = (await getCollection("blog-vi")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const postsEn = await getCollection("blog");
+const postsVi = await getCollection("blog-vi");
+const enBySlug = new Map(postsEn.map((post) => [post.id, post]));
+const viBySlug = new Map(postsVi.map((post) => [post.id, post]));
+const allSlugs = Array.from(new Set([...enBySlug.keys(), ...viBySlug.keys()]));
+
+const posts = allSlugs
+  .map((slug) => {
+    const en = enBySlug.get(slug);
+    const vi = viBySlug.get(slug);
+    const primary = en ?? vi;
+    if (!primary) return null;
+    return {
+      slug,
+      primary,
+      primaryLang: en ? "en" : "vi",
+      hasEn: Boolean(en),
+      hasVi: Boolean(vi),
+    };
+  })
+  .filter((post): post is NonNullable<typeof post> => post !== null)
+  .sort((a, b) => b.primary.data.pubDate.valueOf() - a.primary.data.pubDate.valueOf());
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
-const formatDateVi = (d: Date) =>
-  d.toLocaleDateString("vi-VN", { year: "numeric", month: "long", day: "numeric" });
 
 const title = "Blog — Anh Khoi Le";
 const description = "Thoughts on engineering, tooling, and building software.";
@@ -34,7 +47,6 @@ const description = "Thoughts on engineering, tooling, and building software.";
   <main id="main">
     <section id="blog" class="scroll-mt-20 py-16 md:py-24">
       <div class="mx-auto max-w-5xl px-6">
-
         <div class="reveal mb-10 flex items-baseline gap-4">
           <span class="font-display text-base font-semibold text-pine">04</span>
           <h2 class="font-display text-3xl font-semibold text-ink md:text-4xl">Blog</h2>
@@ -45,103 +57,78 @@ const description = "Thoughts on engineering, tooling, and building software.";
           Things I've written about engineering, tooling, and building software.
         </p>
 
-        <div class="mb-6">
-          <LanguageToggle lang="en" />
-        </div>
+        <div class="grid gap-5 sm:grid-cols-2">
+          {posts.map((entry, i) => {
+            const post = entry.primary;
+            const href = `/blog/${entry.primaryLang}/${entry.slug}/`;
+            const hasTranslation = entry.hasEn && entry.hasVi;
 
-        <div class="grid gap-5 sm:grid-cols-2 mb-16">
-          {postsEn.map((post, i) => (
-            <a
-              href={`/blog/en/${post.id}/`}
-              class={`reveal group flex flex-col rounded-2xl border border-mint-deep bg-paper p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-leaf ${i === 0 ? "sm:col-span-2" : ""}`}
-            >
-              {i === 0 && (
-                <span class="mb-2 inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-pine">
-                  <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-leaf" />
-                  Latest
-                </span>
-              )}
-              <div class="flex items-start justify-between gap-3">
-                <h3
-                  class={`font-display font-semibold text-ink transition-colors group-hover:text-pine ${i === 0 ? "text-2xl" : "text-xl"}`}
-                >
-                  {post.data.title}
-                </h3>
-                <svg
-                  viewBox="0 0 24 24"
-                  class="h-5 w-5 shrink-0 text-moss transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-pine"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M7 17 17 7M8 7h9v9" />
-                </svg>
-              </div>
-              <p class={`mt-3 flex-1 leading-relaxed text-ink/80 ${i === 0 ? "max-w-2xl" : ""}`}>
-                {post.data.description}
-              </p>
-              <div class="mt-4 flex flex-wrap items-center gap-3">
-                <time class="text-xs text-moss">{formatDate(post.data.pubDate)}</time>
-                {post.data.tags.length > 0 && (
-                  <ul class="flex flex-wrap gap-2">
-                    {post.data.tags.map((t) => (
-                      <Tag>{t}</Tag>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </a>
-          ))}
-        </div>
-
-        <div class="reveal mb-10 flex items-baseline gap-4">
-          <span class="font-display text-base font-semibold text-pine">Tiếng Việt</span>
-          <h2 class="font-display text-3xl font-semibold text-ink md:text-4xl">Vietnamese</h2>
-          <span aria-hidden="true" class="ml-2 h-px flex-1 translate-y-[-0.4rem] bg-mint-deep"></span>
-        </div>
-
-        {postsVi.length === 0 ? (
-          <p class="reveal text-moss">Chưa có bài viết tiếng Việt nào.</p>
-        ) : (
-          <div class="grid gap-5 sm:grid-cols-2">
-            {postsVi.map((post, i) => (
-              <a
-                href={`/blog/vi/${post.id}/`}
-                class={`reveal group flex flex-col rounded-2xl border border-mint-deep bg-paper p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-leaf ${i === 0 ? "sm:col-span-2" : ""}`}
+            return (
+              <article
+                class={`reveal group flex flex-col rounded-2xl border border-mint-deep bg-paper p-6 shadow-card transition duration-300 hover:-translate-y-1 hover:border-leaf ${i === 0 && posts.length > 1 ? "sm:col-span-2" : ""}`}
               >
-                {i === 0 && (
+                {i === 0 && posts.length > 1 && (
                   <span class="mb-2 inline-flex w-fit items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-pine">
                     <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-leaf" />
-                    Mới nhất
+                    Latest
                   </span>
                 )}
+
                 <div class="flex items-start justify-between gap-3">
                   <h3
-                    class={`font-display font-semibold text-ink transition-colors group-hover:text-pine ${i === 0 ? "text-2xl" : "text-xl"}`}
+                    class={`font-display font-semibold text-ink transition-colors group-hover:text-pine ${i === 0 && posts.length > 1 ? "text-2xl" : "text-xl"}`}
                   >
-                    {post.data.title}
+                    <a href={href}>{post.data.title}</a>
                   </h3>
-                  <svg
-                    viewBox="0 0 24 24"
-                    class="h-5 w-5 shrink-0 text-moss transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-pine"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
+
+                  <a
+                    href={href}
+                    aria-label={`Read ${post.data.title}`}
+                    class="shrink-0 text-moss transition duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-pine"
                   >
-                    <path d="M7 17 17 7M8 7h9v9" />
-                  </svg>
+                    <svg
+                      viewBox="0 0 24 24"
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M7 17 17 7M8 7h9v9" />
+                    </svg>
+                  </a>
                 </div>
-                <p class={`mt-3 flex-1 leading-relaxed text-ink/80 ${i === 0 ? "max-w-2xl" : ""}`}>
+
+                <p class={`mt-3 flex-1 leading-relaxed text-ink/80 ${i === 0 && posts.length > 1 ? "max-w-2xl" : ""}`}>
                   {post.data.description}
                 </p>
-                <div class="mt-4 flex flex-wrap items-center gap-3">
-                  <time class="text-xs text-moss">{formatDateVi(post.data.pubDate)}</time>
+
+                <div class="mt-5 flex flex-wrap items-center gap-3">
+                  <time class="text-xs text-moss">{formatDate(post.data.pubDate)}</time>
+
+                  {hasTranslation && (
+                    <div class="inline-flex items-center gap-1 text-xs font-medium">
+                      {entry.hasEn && (
+                        <a
+                          href={`/blog/en/${entry.slug}/`}
+                          class="rounded-full border border-mint-deep px-2 py-0.5 text-pine transition-colors hover:border-leaf"
+                        >
+                          EN
+                        </a>
+                      )}
+                      {entry.hasVi && (
+                        <a
+                          href={`/blog/vi/${entry.slug}/`}
+                          class="rounded-full border border-mint-deep px-2 py-0.5 text-pine transition-colors hover:border-leaf"
+                        >
+                          VI
+                        </a>
+                      )}
+                    </div>
+                  )}
+
                   {post.data.tags.length > 0 && (
                     <ul class="flex flex-wrap gap-2">
                       {post.data.tags.map((t) => (
@@ -150,11 +137,10 @@ const description = "Thoughts on engineering, tooling, and building software.";
                     </ul>
                   )}
                 </div>
-              </a>
-            ))}
-          </div>
-        )}
-
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   </main>

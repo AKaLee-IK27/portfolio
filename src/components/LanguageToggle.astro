@@ -1,24 +1,23 @@
 ---
 interface Props {
   lang: "en" | "vi";
+  href?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, href } = Astro.props;
 const isEn = lang === "en";
-const target = isEn ? "vi" : "en";
 const label = isEn ? "Tiếng Việt" : "English";
-// Go to other language's listing — post slugs are independent per language.
-const href = `/blog`;
 ---
 
-<div class="inline-flex items-center gap-2 text-sm">
-  <span class={isEn ? "text-pine font-medium" : "text-moss"}>EN</span>
-  <span class="text-mint-deep">·</span>
-  <a
-    href={href}
-    class="font-medium transition-colors hover:text-pine"
-    class:list={[!isEn && "text-pine"]}
-  >
-    {label}
-  </a>
-</div>
+{href && (
+  <div class="inline-flex items-center gap-2 text-sm">
+    <span class={isEn ? "text-pine font-medium" : "text-moss"}>EN</span>
+    <span class="text-mint-deep">·</span>
+    <a
+      href={href}
+      class={`font-medium transition-colors hover:text-pine ${!isEn ? "text-pine" : "text-moss"}`}
+    >
+      {label}
+    </a>
+  </div>
+)}

@@ -29,9 +29,11 @@ const { Content } = await render(post);
 
 const isEn = lang === "en";
 const otherLang = isEn ? "vi" : "en";
+const otherPosts = isEn ? await getCollection("blog-vi") : await getCollection("blog");
+const hasTranslation = otherPosts.some((candidate) => candidate.id === post.id);
+const translationHref = hasTranslation ? `/blog/${otherLang}/${post.id}/` : undefined;
 const title = `${post.data.title} — Blog — Anh Khoi Le`;
 const description = post.data.description;
-
 
 const formatDate = (d: Date) =>
   isEn
@@ -51,9 +53,11 @@ const formatDate = (d: Date) =>
   <main id="main" class="py-16 md:py-24">
     <article class="mx-auto max-w-[65ch] px-6">
       <header class="reveal mb-10">
-        <div class="mb-4">
-          <LanguageToggle {lang} />
-        </div>
+        {translationHref && (
+          <div class="mb-4">
+            <LanguageToggle {lang} href={translationHref} />
+          </div>
+        )}
         <a
           href="/blog"
           class="mb-6 inline-block text-sm font-medium text-moss hover:text-pine transition-colors"
