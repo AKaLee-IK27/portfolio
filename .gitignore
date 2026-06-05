@@ -21,3 +21,6 @@ node_modules/
 # local scratch screenshots (verification artifacts)
 .*.png
 .vercel
+
+# private interview prep — never build/commit/publish (names employer + interview)
+prep/

@@ -1,0 +1,8 @@
+# Local codegraph daemon state (db, logs, pid, unix socket) — never deploy
+.codegraph/
+
+# Local agent / scratch state
+.remember/
+
+# private interview prep — never deploy (names employer + interview)
+prep/
