@@ -1,8 +1,8 @@
 export const site = {
   name: "Anh Khoi Le",
   role: "Software Engineer",
-  // Blended positioning: proven Flutter/mobile + agentic edge.
-  tagline: "Mobile & web engineer in Flutter, shipping faster with AI coding agents.",
+  // Consulting-oriented positioning: adaptable across stacks, client delivery focus.
+  tagline: "Software engineer at Axon — building native mobile apps with Swift and Kotlin.",
   location: "Ho Chi Minh City, Vietnam",
   // Contact: email is already public on GitHub; phone is intentionally omitted.
   email: "khoile0908540@gmail.com",

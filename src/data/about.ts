@@ -1,6 +1,6 @@
 export const bio = [
-  "I'm a software engineer in Ho Chi Minh City building mobile and web products in Flutter, most recently at Vietnam Silicon. I like software that feels calm to use: careful typography, defaults that respect the person on the other side, and no chrome that isn't earning its place.",
-  "Lately I care as much about how software gets built as what gets built, running AI coding agents like Claude Code in production behind a governed setup, and building small local-LLM tools for macOS on the side.",
+  "I'm a software engineer in Ho Chi Minh City, currently at Axon building native iOS and Android applications with Swift/SwiftUI and Kotlin/Jetpack Compose. Previously, I delivered projects across agriculture, automotive manufacturing, social networking, and point-of-sale systems — adapting to the stack each project demands.",
+  "Beyond day-to-day delivery, I'm interested in how teams build software: I introduced AI-assisted coding tools (Claude Code) into a team workflow for automated refactoring and testing, and I've led sub-teams through code reviews, PR management, and release cycles. I pick up new technologies quickly and enjoy the variety that consulting-style project work brings.",
 ];
 
 export const education = [

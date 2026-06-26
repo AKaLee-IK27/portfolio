@@ -7,7 +7,7 @@ import { education, achievements, certifications, languages } from "../data/abou
 import { projects } from "../data/projects";
 
 const summary =
-  "Software engineer building mobile and web products in Flutter, most recently at Vietnam Silicon. I run AI coding agents in production to ship faster without giving up code quality, holding the line with rigorous review. B.Eng in Software Engineering, UIT (VNU-HCM).";
+  "Software engineer building native mobile applications at Axon using Swift/SwiftUI and Kotlin/Jetpack Compose. Previously delivered mobile and web products in Flutter across agriculture, manufacturing, and social platforms. B.Eng in Software Engineering, UIT (VNU-HCM).";
 ---
 
 <Base title={`${site.name} — Résumé`}>
@@ -39,7 +39,18 @@ const summary =
         experience.map((role) => (
           <div class="r-role-block">
             <div class="r-role-line">
-              <span class="r-company">{role.company}</span>
+              <span class="r-company">
+                {role.logo && (
+                  <img
+                    src={`/logos/${role.logo}`}
+                    alt=""
+                    class="r-logo"
+                    width="14"
+                    height="14"
+                  />
+                )}
+                {role.company}
+              </span>
               <span class="r-period">{role.period}</span>
             </div>
             <p class="r-title">
@@ -182,6 +193,14 @@ const summary =
     .r-company {
       font-weight: 600;
       font-size: 11.5pt;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .r-logo {
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
     }
     .r-period {
       color: #5d6b58;
